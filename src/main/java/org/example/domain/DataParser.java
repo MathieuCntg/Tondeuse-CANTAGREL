@@ -25,6 +25,13 @@ public abstract class DataParser {
         put("W", West);
     }};
 
+    private static final Map<Orientation, String> ORIENTATION_STRING_MAP = new HashMap<>() {{
+        put(North, "N");
+        put(East, "E");
+        put(South, "S");
+        put(West, "W");
+    }};
+
     private static final Map<String, Action> STRING_ACTIONS_MAP = new HashMap<>() {{
         put("A", MoveForward);
         put("D", TurnRight);
@@ -84,5 +91,13 @@ public abstract class DataParser {
 
     private static List<Action> parseInstruction(String instruction) {
         return Arrays.stream(instruction.split("")).map(STRING_ACTIONS_MAP::get).collect(Collectors.toList());
+    }
+
+    public static List<String> lawnToLines(Lawn lawn) {
+        return lawn
+                .mowers()
+                .stream()
+                .map(mower -> mower.getPosition().getxPos() + " " + mower.getPosition().getyPos() + " " + ORIENTATION_STRING_MAP.get(mower.getOrientation()))
+                .collect(Collectors.toList());
     }
 }

@@ -63,4 +63,31 @@ public class DataParserTest {
                 Arguments.of(List.of("5 5", "1 2 N", "GAGAGAAA", "3 3 E", "adg"), InvalidDataFormatException.MOWER_INSTRUCTION + 2)
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("shouldFormatLawnToLinesSource")
+    void shouldFormatLawnToLines(List<Mower> mowerList, List<String> expected) {
+        final var lawn = new Lawn(new Position(5, 5), mowerList);
+
+        final var actual = DataParser.lawnToLines(lawn);
+
+        assertEquals(expected, actual);
+    }
+
+    private static Stream<Arguments> shouldFormatLawnToLinesSource() {
+        return Stream.of(
+                Arguments.of(
+                        List.of(
+                                new Mower(new Position(1, 3), North, List.of()),
+                                new Mower(new Position(5, 1), East, List.of())),
+                        List.of("1 3 N","5 1 E")
+                ),
+                Arguments.of(
+                        List.of(
+                                new Mower(new Position(1, 3), North, List.of())),
+                        List.of("1 3 N")
+                )
+        );
+    }
+
 }
